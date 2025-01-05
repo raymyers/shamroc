@@ -20,10 +20,13 @@ sourceSets {
 
 dependencies {
     implementation("org.antlr:antlr4-runtime:4.13.2")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.17.1")
     antlr4("org.antlr:antlr4:4.13.2")
     testImplementation("org.junit.jupiter:junit-jupiter")
     testImplementation(platform("org.junit:junit-bom:5.10.0"))
     testImplementation("org.junit.jupiter:junit-jupiter")
+    testImplementation("com.approvaltests:approvaltests:24.12.0")
 }
 
 tasks.test {
