@@ -1,5 +1,7 @@
 grammar Sexpr;
 
+// Cons cells (a . b) are omitted for now.
+
 sexpr
     : item* EOF
     ;
@@ -7,7 +9,6 @@ sexpr
 item
     : atom
     | list_
-    | LPAREN item DOT item RPAREN
     ;
 
 list_
@@ -18,7 +19,6 @@ atom
     : STRING
     | SYMBOL
     | NUMBER
-    | DOT
     ;
 
 STRING

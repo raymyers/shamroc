@@ -56,9 +56,9 @@ public class SexprLoader {
         return startContext.toStringTree(parser);
     }
 
-//    public Sexpr toProgram() {
-//        return new OpSemTransformer().transformStart(startContext);
-//    }
+    public SexprAst.Sexpr toAst() {
+        return new SexprTransformer().transformSexpr(startContext);
+    }
 
     public boolean valid(){
         return syntaxErrors.size() == 0;

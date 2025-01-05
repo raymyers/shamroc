@@ -12,11 +12,7 @@ repositories {
 
 val antlr4 by configurations.creating
 
-sourceSets {
-    main {
-        java.srcDir("build/generated-src/java")
-    }
-}
+
 
 dependencies {
     implementation("org.antlr:antlr4-runtime:4.13.2")
@@ -58,4 +54,11 @@ tasks.compileJava {
     dependsOn("generateSources")
     options.compilerArgs.add("-Aproject=${project.group}/${project.name}")
 }
-
+sourceSets {
+    main {
+        java {
+//            srcDir(layout.buildDirectory.file("generated-src/java").get().asFile)
+            srcDir(tasks.get("generateSources"))
+        }
+    }
+}

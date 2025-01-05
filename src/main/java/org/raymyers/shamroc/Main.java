@@ -2,6 +2,10 @@ package org.raymyers.shamroc;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        String sexpr = """
+            (if a b)
+        """;
+        SexprAst.Sexpr ast = new SexprLoader(sexpr).toAst();
+        System.out.println(ast);
     }
 }
