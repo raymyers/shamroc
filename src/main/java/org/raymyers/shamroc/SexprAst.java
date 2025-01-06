@@ -18,5 +18,17 @@ public interface SexprAst {
     record SYMBOL(String v) implements Atom { }
     record NUMBER(String v) implements Atom { }
     record DOT() implements Atom { }
-
+//  lang Sexpr {
+//    data Prog(List<Item> items);
+//    data Item
+//        : List_(List<Item> items)
+//        | Atom;
+//    data Atom
+//        : record STRING(String v)
+//        | record SYMBOL(String v)
+//        | record NUMBER(String v);
+// }
+// lang Sexp2 extends Sexpr {
+//   ~Atom : -Symbol;
+// }
 }

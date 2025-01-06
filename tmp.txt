@@ -1,0 +1,133 @@
+lang X86int {
+    type Prog(info: String, List<LabelBlock>);
+    type LabelBlock(label: String, Block);
+    type Block(String info, List<Inst>);
+    type Instr
+        : BinOpInstr(BinOp, Arg, Arg)
+        | UnOpInstr(UnOp, Arg)
+        | Callq(label: String, int)
+        | Retq
+        | Jmp(label: String);
+    type BinOp : addq | subq | movq;
+    type UnOp : negq | pushq | popq;
+    type Reg
+        : rsp | rbp | rax | rbx | rcx | rdx | rsi | rdi |
+          r8 | r9 | r10 | r11 | r12 | r12 | r13 | r14 | r15;
+    type Arg : Imm(int) | RegArg(Reg) | Deref(Reg, int);
+}
+
+lan Cvar {
+
+}
+
+lang Lint {
+  type Prog(Expr);
+  type Expr
+      : IntLit(int)
+      | PrimUnOp(UnOp, Expr)
+      | PrimBinOp(BinOp, Expr, Expr);
+  type PrimUnOp : neg | print;
+  type BinOp : add | sub | mult;
+}
+
+transform ToX86 : Lint -> X86int;
+transform ToLint : Lval -> X86int;
+
+sequence Main {
+  pass ToLint;
+  pass ToX86;
+}
+
+lang Lval extends Lint {
+  ~ type Expr: +Var | +Let;
+}
+
+prod forStmt ( clause : LoopClause, body : Stmt ): Stmt;
+
+syn
+
+lang Lint {
+ Expr.prods := { intLit, primUnOp, primBinOp }
+}
+
+lang Lval extends Lint {
+    Expr.prods += { var, let }
+}
+
+lang X86int {
+    reg.prods += {
+        rsp, rbp, rax, rbx, rcx, rdx, rsi, rdi,
+        r8, r9, r10, r11, r12, r12, r13, r14, r15
+    }
+}
+
+lang Lgen {
+}
+
+lang Linst {
+
+}
+
+lang Lcast {
+
+}
+
+lang Lproxy {
+
+}
+
+lang Lpor {
+
+}
+
+lang Lfunref_por {
+
+}
+
+lang Lalloc_por {
+
+}
+
+lang Calloc_por {
+
+}
+
+lang X86vardef_callq {
+
+}
+
+lang X86def_callq {
+
+}
+
+
+lang L15 extends L14 {
+  Expr.prods -= { complex, real, imag },
+  Type.attrs -= { isComplex64 },
+  BinOps.attrs -= { complexOpName }
+}
+
+transform toL15 from L14 to L15;
+
+parser grammar ExprParser;
+options { tokenVocab=ExprLexer; }
+
+program
+    : def* EOF
+    ;
+
+
+defProd : 'prod' ID '(' typedId (',' typedId)* ')' ':' ID ';' ;
+//'{' stat* '}' ;
+
+typedId : ID ':' ID;
+
+expr: ID
+    | INT
+    | func
+    | 'not' expr
+    | expr 'and' expr
+    | expr 'or' expr
+    ;
+
+func : ID '(' expr (',' expr)* ')' ;

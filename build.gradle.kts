@@ -41,7 +41,7 @@ tasks.register<JavaExec>("generateSources") {
 
     mainClass = "org.antlr.v4.Tool"
     classpath = antlr4
-    val grammarFiles = listOf("Sexpr.g4").map { grammarDir.resolve(it) }
+    val grammarFiles = listOf("Sexpr.g4", "AttrGram.g4").map { grammarDir.resolve(it) }
     args(
         listOf("-o", generatedSourcePackageDir)
                 + grammarFiles
@@ -57,7 +57,6 @@ tasks.compileJava {
 sourceSets {
     main {
         java {
-//            srcDir(layout.buildDirectory.file("generated-src/java").get().asFile)
             srcDir(tasks.get("generateSources"))
         }
     }
