@@ -62,7 +62,7 @@ public class ShamrocLoader {
     }
 
     public ShamrocAst.Program toAst() {
-        return new ShamrocTransformer().transformProgram(startContext);
+        return new ShamrocParseTreeToAst().transformProgram(startContext);
     }
 
     public boolean valid(){

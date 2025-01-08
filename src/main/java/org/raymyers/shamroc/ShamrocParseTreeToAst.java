@@ -6,7 +6,7 @@ import org.raymyers.shamroc.generated.ShamrocParser;
 import java.util.List;
 import java.util.Optional;
 
-public class ShamrocTransformer {
+public class ShamrocParseTreeToAst {
     public ShamrocAst.Program transformProgram(ShamrocParser.ProgramContext node) {
         List<ShamrocAst.Def> items = node.def().stream().map(this::transformDef).toList();
         return new ShamrocAst.Program(items);
