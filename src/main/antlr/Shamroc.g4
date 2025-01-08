@@ -1,20 +1,22 @@
 grammar Shamroc;
 
 program
-    : defLang* EOF
+    : def* EOF
     ;
 
-def : defLang;
+def : defLang | defSequence;
 
-defLang : LANG ID '{' langItem* '}';
+defLang : 'lang' ID '{' langItem* '}';
+
+defSequence : 'sequence' ID '{''}';
 
 langItem:
     (record | sumType)';'
     ;
 
-record: ID '(' recordArg (',' recordArg)* ')' ;
+record: ID '(' recordField (',' recordField)* ')' ;
 
-recordArg : nameOrType ( ':' nameOrType)?;
+recordField : nameOrType ( ':' nameOrType)?;
 
 sumType : ID ':' sumTypeOption ('|' sumTypeOption)*;
 
@@ -22,9 +24,16 @@ sumTypeOption : record | nameOrType;
 
 nameOrType : ID ('<' ID '>')?;
 
+COMMENT
+  :  '//' ~( '\r' | '\n' )* -> skip
+  ;
+
+BLOCKCOMMENT
+    : '/*' .*? '*/' -> skip
+    ;
 
 LANG: 'lang';
-
+SEQUENCE: 'sequence';
 
 ID : [a-zA-Z_][a-zA-Z_0-9]*;
 
@@ -39,9 +48,6 @@ Pipe: '|';
 LT: '<';
 RT: '>';
 
-BLOCKCOMMENT
-    : '/*' .*? '*/' -> skip
-    ;
 
 WS
     : [ \t\r\n] -> skip

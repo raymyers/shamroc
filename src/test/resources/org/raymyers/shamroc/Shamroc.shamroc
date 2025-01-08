@@ -1,0 +1,11 @@
+lang Shamroc {
+    Program: List<Def>;
+    Def: DefLang; // | DefSequence;
+    DefLang(name: String, List<LangItem>);
+    LangItem: Record | SumType;
+    Record: List<RecordField>;
+    RecordField(NameOrType, Optional<NameOrType>);
+    NameOrType(String, Optional<String>);
+    SumType(String, List<SumTypeOption>);
+    SumTypeOption: Record | NameOrType;
+}
