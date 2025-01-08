@@ -1,70 +1,48 @@
-
-grammar AttrGram;
+grammar Shamroc;
 
 program
-    : statement* EOF
+    : defLang* EOF
     ;
 
-statement
-    : defProd
-    | defLang
+def : defLang;
+
+defLang : LANG ID '{' langItem* '}';
+
+langItem:
+    (record | sumType)';'
     ;
 
-defProd : 'prod' ID '(' typedId (',' typedId)* ')' ':' ID ';' ;
-defLang :
-    'lang' ID ('extends' ID?)
-    '{'
-    langDecl (',' langDecl)*
-    '}' ;
+record: ID '(' recordArg (',' recordArg)* ')' ;
 
-langDecl
-  : ID '.' ID landDeclOp nameSet;
+recordArg : nameOrType ( ':' nameOrType)?;
 
-landDeclOp : '-=' | '+=';
+sumType : ID ':' sumTypeOption ('|' sumTypeOption)*;
 
-nameSet:
-  '{' ID (',' ID)* '}' ;
+sumTypeOption : record | nameOrType;
 
-typedId : ID ':' ID;
-
-expr: ID
-    | INT
-    | func
-    | 'not' expr
-    | expr 'and' expr
-    | expr 'or' expr
-    ;
-
-func : ID '(' expr (',' expr)* ')' ;
+nameOrType : ID ('<' ID '>')?;
 
 
-integer
-    : INT
-    ;
-
-PROD
-    : 'prod'
-    ;
-
-LANG
-    : 'lang'
-    ;
+LANG: 'lang';
 
 
-ID
-    : [a-zA-Z0-9]+
-    ;
+ID : [a-zA-Z_][a-zA-Z_0-9]*;
 
-INT
-    : [0-9]+
+
+LBrace: '{';
+RBrace: '}';
+LParen: '(';
+RParen: ')';
+Semi: ';';
+Colon: ':';
+Pipe: '|';
+LT: '<';
+RT: '>';
+
+BLOCKCOMMENT
+    : '/*' .*? '*/' -> skip
     ;
 
 WS
-    : [ \r\n\t] -> skip
+    : [ \t\r\n] -> skip
     ;
-
-LBRACE: '{';
-RBRACE: '}';
-
-LPAREN: '(';
-RPAREN: ')';

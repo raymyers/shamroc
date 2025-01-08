@@ -1,0 +1,57 @@
+lang CompCertC {
+    Program(
+        List<ProgDef>,
+        progPublic : List<Ident>,
+        progMain : Ident,
+        progTypes : List<CompositeDefinition>
+    );
+    Function(
+            ReturnType : Type,
+            CallingConvention,
+            params: List<IdentType>,
+            vars: List<IdentType>,
+            body: Statement
+        );
+    Expr
+     : Eval(val, Type)
+     | Evar(Ident, Type)
+     | Efield(Expr, Ident, Type)
+     | Evalof(Expr, Type)
+     | Ederef(Expr, Type)
+     | Eaddrof(Expr, Type)
+     | Eunop(UnaryOperation, Expr, Type)
+     | Ebinop(BinaryOperation, Expr, Expr, Type)
+     | Ecast(Expr, Type)
+     | Eseqand(Expr, Expr, Type)
+     | Eseqor(Expr, Expr, Type)
+     | Econdition(Expr, Expr, Expr, Type)
+     | Esizeof(Type, Type)
+     | Ealignof(Type, Type)
+     | Eassign(Expr, Expr, Type)
+     | Eassignop(BinaryOperation, Expr, Expr, Type, Type)
+     | Epostincr(IncrOrDecr, Expr, Type)
+     | Ecomma(Expr, Expr, Type)
+     | Ecall(Expr, ExprList, Type)
+     | Ebuiltin(ExternalFunction, List<Type>, ExprList, Type)
+     | Eloc(Block, Ptrofs, Bitfield, Type)
+     | Eparen(Expr, Type, Type);
+
+    ExprList: List<Expr>;
+
+    Statement
+     : Sskip
+     | Sdo(Expr)
+     | Ssequence(Statement, Statement)
+     | Sifthenelse(Expr, Statement, Statement)
+     | Swhile(Expr, Statement)
+     | Sdowhile(Expr, Statement)
+     | Sfor(Statement, Expr, Statement, Statement)
+     | Sbreak
+     | Scontinue
+     | Sreturn(Optional<Expr>)
+     | Sswitch(Expr, List<LabeledStatement>)
+     | Slabel(Label, Statement)
+     | Sgoto(Label);
+
+   LabeledStatement(label: String, Statement);
+}
